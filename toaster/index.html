@@ -115,12 +115,109 @@
         <div class="highlight highlight-Bash">
             <pre><code>composer require laralabs/toaster</code></pre>
         </div>
+        <p>Follow the instructions above to make sure this package is loaded.</p>
         <p>Install the <a href="https://www.npmjs.com/package/vue-toast">vue-toast</a> package through npm</p>
         <div class="highlight highlight-Bash">
             <pre><code>npm install vue-toast --save</code></pre>
         </div>
+        <h3><a id="vue-configure-heading" class="anchor" href="#vue-configure-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configure Laravel Mix and Vue Instance</h3>
+        <p>Now that the packages are installed vue-toast can be pulled into Laravel Mix, add the following import lines to your <code>resources/assets/js/bootstrap.js</code> file.</p>
+        <div class="highlight highlight-Js">
+            <pre><code>import 'vue-toast/dist/vue-toast.min.css'
+import VueToast from 'vue-toast'</code></pre>
+        </div>
+        <h4><a id="vue-define-component-heading" class="anchor" href="#vue-define-component-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Component</h4>
+        <p>Now that the component is getting imported, open <code>resources/assets/js/app.js</code> and register it in the Vue instance under <code>components</code>.</p>
+        <div class="highlight highlight-Js">
+                    <pre><code>const app = new Vue({
+    el: '#app',
+    components: {
+        VueToast
+    }
+});</code></pre>
+        </div>
+        <h4><a id="vue-define-data-heading" class="anchor" href="#vue-define-data-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Data</h4>
+        <p>The data for the component needs to be defined in the Vue instance.</p>
+        <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
+        <div class="highlight highlight-Js">
+            <pre><code>const app = new Vue({
+    el: '#app',
+    data: {
+        js_namespace: {
+            data: {
+                timeLife: js_namespace.data.lifetime,
+                maxToasts: js_namespace.data.maxToasts,
+                messages: js_namespace.data.messages,
+                position: js_namespace.data.position
+            }
+        }
+    },
+    components: {
+        VueToast
+    }
+});</code></pre>
+        </div>
+        <h4><a id="vue-define-methods-heading" class="anchor" href="#vue-define-methods-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Methods</h4>
+        <p>For the component to work correctly we must define some methods, these methods have been tweaked slightly to better suit this package. Add the following <code>methods</code> section beneath <code>data</code> in your Vue instance.</p>
+        <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
+        <div class="highlight highlight-Js">
+            <pre><code>methods: {
+    resetOptions: function() {
+        this.$refs.toast.setOptions({
+            delayOfJumps: this.js_namespace.data.delayOfJumps,
+            maxToasts: this.js_namespace.data.maxToasts,
+            position: this.js_namespace.data.position
+        })
+    },
+    displayToast: function(theme, message, closeBtn, expires) {
+        this.$refs.toast.showToast(message, {
+            theme: theme,
+            timeLife: expires,
+            closeBtn: closeBtn
+        })
+    },
+    showAll: function() {
+        const self = this;
+        $.each(this.js_namespace.data.messages, function (index, message) {
+            self.displayToast(message.theme, message.message, message.closeBtn, message.expires);
+        });
+    },
+    closeAll: function() {
+        this.$refs.toast.closeAll()
+    }
+},
+</code></pre>
+        </div>
+        <h4><a id="vue-define-mounted-heading" class="anchor" href="#vue-define-mounted-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Mounted</h4>
+        <p>The <code>mounted</code> function needs to be defined so toast options can be reset and displayed.</p> <p>We need to check if there are any messages before display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
+        <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
+        <div class="highlight highlight-Js">
+            <pre><code>mounted: function () {
+    this.resetOptions();
+    if(this.js_namespace.data.messages) {
+        this.showAll();
+    }
+},</code></pre>
+        </div>
+        <h4><a id="vue-add-component-heading" class="anchor" href="#vue-add-component-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add Component To View</h4>
+        <p>The component needs to be added to a view for the toasts to display, place the code below into a view that is included on every page.</p>
+        <div class="highlight highlight-Html">
+            <pre><code>&lt;vue-toast ref="toast"&gt;&lt;/vue-toast&gt;</code></pre>
+        </div>
+        <h4><a id="vue-add-php-heading" class="anchor" href="#vue-add-php-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit Controller</h4>
+        <p>That's the Vue side of things setup, now create some messages using the <code>toaster()</code> function in your controller function before you return a view or perform a redirect.</p>
+        <div class="highlight highlight-Php">
+            <pre><code>public function welcome()
+{
+    toaster()->add('Welcome to the Toaster example!')->success()->important();
 
-      <footer class="site-footer">
+    return view('welcome');
+}</code></pre>
+        </div>
+
+
+
+        <footer class="site-footer">
         <span class="site-footer-owner">All packages under <a href="https://github.com/laralabs">Laralabs</a> are crafted with <i class="fa fa-heart heart"></i> by <a href="https://github.com/CLINT0N">Matt Clinton</a>.</span>
       </footer>
 
