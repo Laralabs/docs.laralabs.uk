@@ -24,13 +24,13 @@
     <section class="main-content">
 
       <h1><a id="introduction-heading" class="anchor" href="#introduction-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
-      <p>The toaster package for Laravel provides a quick 'n easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite JS Framework components such as Vue, Angular and React.</p>
+      <p>The toaster package for Laravel provides a quick 'n easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite Vue, Angular or React components.</p>
 
       <h1><a id="installation-heading" class="anchor" href="#installation-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
       <h3><a id="prereq-heading" class="anchor" href="#prereq-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
       <p>Before beginning the installation process, make sure you have the prerequisites listed below:</p>
       <ul class="task-list">
-        <li>PHP >= 7.0.0</li>
+        <li>PHP >= 5.6</li>
         <li>Laravel >= 5.0</li>
         <li>Composer</li>
       </ul>
@@ -189,7 +189,7 @@ import VueToast from 'vue-toast'</code></pre>
 </code></pre>
         </div>
         <h4><a id="vue-define-mounted-heading" class="anchor" href="#vue-define-mounted-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Mounted</h4>
-        <p>The <code>mounted</code> function needs to be defined so toast options can be reset and displayed.</p> <p>We need to check if there are any messages before display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
+        <p>The <code>mounted</code> function needs to be defined so that toast options can be reset and displayed.</p> <p>We need to check if there are any messages before display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
         <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
         <div class="highlight highlight-Js">
             <pre><code>mounted: function () {
@@ -209,13 +209,20 @@ import VueToast from 'vue-toast'</code></pre>
         <div class="highlight highlight-Php">
             <pre><code>public function welcome()
 {
-    toaster()->add('Welcome to the Toaster example!')->success()->important();
+    toaster()->add('Welcome to the Toaster example!')->success()->important()->toast();
 
     return view('welcome');
 }</code></pre>
         </div>
+        <h4><a id="vue-final-checks-heading" class="anchor" href="#vue-final-checks-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Final Checks</h4>
+        <p>Browse to the page that you have added your messages to, if they display then great! everything has been done correctly.</p>
+        <p>If they don't display there are a couple of things to check:</p>
+        <ul>
+            <li>Make sure <code>js_namespace</code> has been changed to the namespace you have set in <code>config/toaster.php</code></li>
+            <li>Make sure that the view defined in <code>config/toaster.php</code> is included above your <code>app.js</code> file.</li>
+        </ul>
 
-
+        <p>Still having issues? Open an <a href="https://github.com/Laralabs/toaster/issues">issue</a> on GitHub with some code examples and we'll help you out.</p>
 
         <footer class="site-footer">
         <span class="site-footer-owner">All packages under <a href="https://github.com/laralabs">Laralabs</a> are crafted with <i class="fa fa-heart heart"></i> by <a href="https://github.com/CLINT0N">Matt Clinton</a>.</span>
