@@ -24,7 +24,7 @@
     <section class="main-content">
 
       <h1><a id="introduction-heading" class="anchor" href="#introduction-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
-      <p>The toaster package for Laravel provides a quick 'n easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite Vue, Angular or React components.</p>
+      <p>The toaster package for Laravel provides a quick 'n' easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite Vue, Angular or React components.</p>
 
       <h1><a id="installation-heading" class="anchor" href="#installation-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
       <h3><a id="prereq-heading" class="anchor" href="#prereq-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
@@ -46,7 +46,7 @@
       <h3><a id="serviceprovider-heading" class="anchor" href="#serviceprovider-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Service Provider</h3>
       <p>This section highly depends on which Laravel version you are running:</p>
       <p><strong>>= 5.5 -</strong> Skip this step as the service provider will be loaded automatically through package discovery.</p>
-      <p><strong><= 5.4 -</strong> Add the service provider to your <code>$providers</code> array within <code>config/app.php</code> file.</p>
+      <p><strong><= 5.4 -</strong> Add the service provider to your <code>$providers</code> array within the <code>config/app.php</code> file.</p>
       <div class="highlight highlight-Php">
         <pre><code>'providers' => [
     Laralabs\Toaster\ToasterServiceProvider::class
@@ -70,7 +70,7 @@
     return redirect('/');
 }</code></pre>
       </div>
-      <p>The <code>add()</code> function also takes arguments for other settings, below is an example of these with their defaults</p>
+      <p>The <code>add()</code> function also takes arguments for other settings, below is an example of these with their defaults:</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add($message = null, $theme = 'info', $closeBtn = false, $title = '', $expires = null)->toast();</code></pre>
       </div>
@@ -158,7 +158,7 @@ import VueToast from 'vue-toast'</code></pre>
 });</code></pre>
         </div>
         <h4><a id="vue-define-methods-heading" class="anchor" href="#vue-define-methods-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Methods</h4>
-        <p>For the component to work correctly we must define some methods, these methods have been tweaked slightly to better suit this package. Add the following <code>methods</code> section beneath <code>data</code> in your Vue instance.</p>
+        <p>For the component to work correctly some methods must be defined, these methods have been tweaked slightly to better suit this package. Add the following <code>methods</code> section beneath <code>data</code> in your Vue instance.</p>
         <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
         <div class="highlight highlight-Js">
             <pre><code>methods: {
@@ -189,7 +189,7 @@ import VueToast from 'vue-toast'</code></pre>
 </code></pre>
         </div>
         <h4><a id="vue-define-mounted-heading" class="anchor" href="#vue-define-mounted-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Mounted</h4>
-        <p>The <code>mounted</code> function needs to be defined so that toast options can be reset and displayed.</p> <p>We need to check if there are any messages before display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
+        <p>The <code>mounted</code> function needs to be defined so that toast options can be reset and displayed.</p> <p>We need to check if there are any messages before attempting to display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
         <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
         <div class="highlight highlight-Js">
             <pre><code>mounted: function () {
