@@ -246,3 +246,52 @@ a {
 
 .site-footer-credits {
   color: #819198; }
+
+.package:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+  background-image: url("/images/laravel_logo.svg");
+  background-size: 200px 100px;
+  background-position: 90% 50%;
+  background-repeat: no-repeat;
+  z-index: -1;
+  width: 100%;
+  height: 100%; }
+
+.toaster:after {
+  background-image: url("/images/toaster_logo.svg") !important; }
+
+.package-wrap {
+  text-decoration: none;
+  margin-bottom: 25px; }
+  .package-wrap .package {
+    position: relative;
+    width: 100%;
+    font-family: "Miriam Libre", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-height: 120px;
+    box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #C8C8C8;
+    padding: 20px;
+    margin-bottom: 36px; }
+    .package-wrap .package .package-name {
+      font-weight: bold;
+      color: #f4645f;
+      font-size: 1.2rem; }
+    .package-wrap .package .package-desc {
+      max-width: 70%;
+      margin-top: 10px;
+      font-size: 1.0rem;
+      color: #525252; }
+    .package-wrap .package .package-view {
+      position: absolute;
+      right: 20px;
+      top: 40%;
+      color: #525252;
+      opacity: 0.9; }
+      .package-wrap .package .package-view i {
+        font-size: 2rem; }
+  .package-wrap:hover {
+    text-decoration: none; }
