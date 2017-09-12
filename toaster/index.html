@@ -17,8 +17,6 @@
       <h2 class="project-tagline">Easily generate and bind message JSON data to the view for use in frontend toast components</h2>
       <a href="https://github.com/Laralabs/toaster" class="btn">View on GitHub</a>
       <a href="https://packagist.org/packages/laralabs/toaster" class="btn">View on Packagist</a>
-      <!-- a href="https://github.com/Laralabs/toaster/zipball/master" class="btn">Download .zip</a -->
-      <!-- a href="https://github.com/Laralabs/toaster/tarball/master" class="btn">Download .tar.gz</a -->
     </section>
 
     <section class="main-content">
@@ -39,7 +37,7 @@
       <div class="highlight highlight-Javascript">
         <pre><code>{
     "require": {
-      "laralabs/toaster": "~1.0.0"
+      "laralabs/toaster": "~1.1.0"
     }
 }</code></pre>
       </div>
@@ -77,6 +75,11 @@
       <p>The <code>toast()</code> function should always be placed on the end of the chain, this function handles binding the data to the view.</p>
       <h3><a id="helpers-heading" class="anchor" href="#helpers-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Helper Functions</h3>
       <p>Helper functions are included to make modifying message properties a lot more friendly, these functions will always update the last message created with the <code>add()</code> function.</p>
+      <h4><a id="update-heading" class="anchor" href="#update-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>update()</h4>
+      <p>The <code>update()</code> function accepts an array as an argument, this can be used to mass update the previous message attributes.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->add('Add message here')->update(['theme' => 'error', 'closeBtn' => true, 'title' => 'It now has a title', 'expires' => 5000])->toast();</code></pre>
+      </div>
       <h4><a id="success-heading" class="anchor" href="#success-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>success()</h4>
       <p>The <code>success()</code> function can be used to set the message theme to <code>'success'</code>.</p>
       <div class="highlight highlight-Php">
