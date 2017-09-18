@@ -59,13 +59,13 @@
       <p>Now the configuration file located at <code>config/toaster.php</code> can be edited to suit your application.</p>
 
       <h1><a id="usage-heading" class="anchor" href="#usage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
-      <p>Within your controller methods; before performing a redirect, make a call to <code>toaster()->add()->toast()</code></p>
+      <p>Within your controller methods; before returning a view, make a call to <code>toaster()->add()->toast()</code></p>
       <div class="highlight highlight-Php">
         <pre><code>public function store()
 {
     toaster()->add('Add message here')->toast();
 
-    return redirect('/');
+    return view('home');
 }</code></pre>
       </div>
       <p>The <code>add()</code> function also takes arguments for other settings, below is an example of these with their defaults:</p>
