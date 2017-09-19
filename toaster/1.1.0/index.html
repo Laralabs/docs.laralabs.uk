@@ -18,7 +18,7 @@
       <a href="https://github.com/Laralabs/toaster" class="btn">View on GitHub</a>
       <a href="https://packagist.org/packages/laralabs/toaster" class="btn">View on Packagist</a>
       <div class="version-number">
-          Version <span class="v-num">2.0.0</span>
+          Version <span class="v-num">1.1.0</span>
       </div>
     </section>
 
@@ -26,14 +26,13 @@
 
       <h1><a id="introduction-heading" class="anchor" href="#introduction-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
       <p>The toaster package for Laravel provides a quick 'n' easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite Vue, Angular or React components.</p>
-      <blockquote>Documentation for version 1.1.0 can be found <a href="/toaster/1.1.0/index.html">here</a></blockquote>
 
       <h1><a id="installation-heading" class="anchor" href="#installation-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
       <h3><a id="prereq-heading" class="anchor" href="#prereq-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
       <p>Before beginning the installation process, make sure you have the prerequisites listed below:</p>
       <ul class="task-list">
-        <li>PHP >= 7.0</li>
-        <li>Laravel >= 5.4</li>
+        <li>PHP >= 5.6</li>
+        <li>Laravel >= 5.0</li>
         <li>Composer</li>
       </ul>
       <h3><a id="composer-heading" class="anchor" href="#composer-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Composer</h3>
@@ -41,7 +40,7 @@
       <div class="highlight highlight-Javascript">
         <pre><code>{
     "require": {
-      "laralabs/toaster": "~2.0.0"
+      "laralabs/toaster": "~1.1.0"
     }
 }</code></pre>
       </div>
@@ -63,62 +62,56 @@
       <p>Now the configuration file located at <code>config/toaster.php</code> can be edited to suit your application.</p>
 
       <h1><a id="usage-heading" class="anchor" href="#usage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
-      <p>Within your controller methods; before returning a view or redirect, make a call to <code>toaster()->add();</code></p>
+      <p>Within your controller methods; before returning a view, make a call to <code>toaster()->add()->toast()</code></p>
       <div class="highlight highlight-Php">
         <pre><code>public function store()
 {
-    toaster()->add('Add message here');
+    toaster()->add('Add message here')->toast();
 
-    return redirect('home');
+    return view('home');
 }</code></pre>
       </div>
       <p>The <code>add()</code> function also takes arguments for other settings, below is an example of these with their defaults:</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add($message = null, $theme = 'info', $closeBtn = false, $title = '', $expires = null);</code></pre>
+        <pre><code>toaster()->add($message = null, $theme = 'info', $closeBtn = false, $title = '', $expires = null)->toast();</code></pre>
       </div>
-      <h3><a id="blade-heading" class="anchor" href="#blade-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Blade Directive</h3>
-      <p>Include the generated JavaScript within your view using the <code>@toaster</code> blade directive, you should add this in your template before the application scripts are loaded, within <code>&lt;head&gt;</code> would be the best location.</p>
-      <div class="highlight highlight-Php">
-          <pre><code>&lt;head&gt;
-    @toaster
-&lt;/head&gt;</code></pre>
-      </div>
+      <p>The <code>toast()</code> function should always be placed on the end of the chain, this function handles binding the data to the view.</p>
       <h3><a id="helpers-heading" class="anchor" href="#helpers-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Helper Functions</h3>
       <p>Helper functions are included to make modifying message properties a lot more friendly, these functions will always update the last message created with the <code>add()</code> function.</p>
       <h4><a id="update-heading" class="anchor" href="#update-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>update()</h4>
       <p>The <code>update()</code> function accepts an array as an argument, this can be used to mass update the previous message attributes.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->update(['theme' => 'error', 'closeBtn' => true, 'title' => 'It now has a title', 'expires' => 5000]);</code></pre>
+        <pre><code>toaster()->add('Add message here')->update(['theme' => 'error', 'closeBtn' => true, 'title' => 'It now has a title', 'expires' => 5000])->toast();</code></pre>
       </div>
       <h4><a id="success-heading" class="anchor" href="#success-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>success()</h4>
       <p>The <code>success()</code> function can be used to set the message theme to <code>'success'</code>.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->success();</code></pre>
+        <pre><code>toaster()->add('Add message here')->success()->toast();</code></pre>
       </div>
       <h4><a id="error-heading" class="anchor" href="#error-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>error()</h4>
       <p>The <code>error()</code> function can be used to set the message theme to <code>'error'</code>.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->error();</code></pre>
+        <pre><code>toaster()->add('Add message here')->error()->toast();</code></pre>
       </div>
       <h4><a id="warning-heading" class="anchor" href="#warning-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>warning()</h4>
       <p>The <code>warning()</code> function can be used to set the message theme to <code>'warning'</code>.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->warning();</code></pre>
+        <pre><code>toaster()->add('Add message here')->warning()->toast();</code></pre>
       </div>
       <h4><a id="important-heading" class="anchor" href="#important-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>important()</h4>
       <p>The <code>important()</code> function can be used to set the closeBtn flag to <code>true</code>.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->important();</code></pre>
+        <pre><code>toaster()->add('Add message here')->important()->toast();</code></pre>
       </div>
       <h4><a id="title-heading" class="anchor" href="#title-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>title()</h4>
       <p>The <code>title()</code> function accepts one argument and can be used to set the title property.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->title('Message title here');</code></pre>
+        <pre><code>toaster()->add('Add message here')->title('Message title here')->toast();</code></pre>
       </div>
       <h4><a id="expires-heading" class="anchor" href="#expires-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>expires()</h4>
       <p>The <code>expires()</code> function accepts one argument and can be used to set a custom expiry time, this overrides config values.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->expires(5000);</code></pre>
+        <pre><code>toaster()->add('Add message here')->expires(5000)->toast();</code></pre>
       </div>
       <h2><a id="vue-usage-heading" class="anchor" href="#vue-usage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vue.js (vue-toast)</h2>
         <p>This is a short guide on using this package with a Vue.js toast component, this guide assumes you have basic knowledge of working with Vue and Laravel.</p>
@@ -225,7 +218,7 @@ import VueToast from 'vue-toast'</code></pre>
         <div class="highlight highlight-Php">
             <pre><code>public function welcome()
 {
-    toaster()->add('Welcome to the Toaster example!')->success()->important();
+    toaster()->add('Welcome to the Toaster example!')->success()->important()->toast();
 
     return view('welcome');
 }</code></pre>
@@ -235,18 +228,10 @@ import VueToast from 'vue-toast'</code></pre>
         <p>If they don't display there are a couple of things to check:</p>
         <ul>
             <li>Make sure <code>js_namespace</code> has been changed to the namespace you have set in <code>config/toaster.php</code></li>
-            <li>Make sure that you have included the <code>@toaster</code> blade directive within your template file</li>
+            <li>Make sure that the view defined in <code>config/toaster.php</code> is included above your <code>app.js</code> file.</li>
         </ul>
 
         <p>Still having problems? Open an <a href="https://github.com/Laralabs/toaster/issues">issue</a> on GitHub with some code examples and we'll help you out.</p>
-        <hr>
-        <h2><a id="previous-docs-heading" class="anchor" href="#previous-docs-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous Documentation</h2>
-        <p>Toaster Documentation Archive</p>
-        <ul>
-            <li>
-                <a href="/toaster/1.1.0/index.html">Version 1.1.0</a>
-            </li>
-        </ul>
 
         <footer class="site-footer">
         <span class="site-footer-owner">All packages under <a href="https://github.com/laralabs">Laralabs</a> are crafted with <i class="fa fa-heart heart"></i> by <a href="https://github.com/CLINT0N">Matt Clinton</a>.</span>

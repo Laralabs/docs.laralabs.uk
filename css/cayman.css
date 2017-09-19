@@ -50,6 +50,7 @@ a {
         margin-left: 0; } }
 
 .page-header {
+  position: relative;
   color: #fff;
   text-align: center;
   background-color: #f55247;
@@ -92,6 +93,19 @@ a {
   @media screen and (max-width: 42em) {
     .project-tagline {
       font-size: 1rem; } }
+
+.version-number {
+  padding: 12px 26px;
+  background-color: rgba(255, 255, 255, 0.12);
+  font-family: "Miriam Libre", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  position: absolute;
+  letter-spacing: 1px;
+  right: 20px;
+  top: 20px;
+  border-radius: 10px; }
+  .version-number .v-num {
+    font-weight: bold; }
 
 .main-content {
   word-wrap: break-word; }

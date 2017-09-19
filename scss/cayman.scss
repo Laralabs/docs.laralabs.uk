@@ -110,6 +110,7 @@ a {
 }
 
 .page-header {
+  position: relative;
   color: $header-heading-color;
   text-align: center;
   background-color: $header-bg-color;
@@ -162,6 +163,22 @@ a {
 
   @include small {
     font-size: 1rem;
+  }
+}
+
+.version-number {
+  padding: 12px 26px;
+  background-color: rgba(255, 255, 255, 0.12);
+  font-family: "Miriam Libre", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  position: absolute;
+  letter-spacing: 1px;
+  right: 20px;
+  top: 20px;
+  border-radius: 10px;
+
+  .v-num {
+    font-weight: bold;
   }
 }
 
