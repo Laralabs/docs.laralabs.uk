@@ -71,7 +71,7 @@
         <h4>Removed</h4>
         <ul>
           <li><code>expires()</code> function.</li>
-          <li>'js_namespace' config option removed, namespace will always be 'toaster'</li>
+          <li><code>js_namespace</code> config option removed, namespace will always be <code>toaster</code></li>
         </ul>
       <h1><a id="installation-heading" class="anchor" href="#installation-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
       <h3><a id="prereq-heading" class="anchor" href="#prereq-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
@@ -117,7 +117,7 @@
     return redirect('home');
 }</code></pre>
       </div>
-      <p>The <code>add()</code> function can also take a title and array of properties, below is an example of these with their defaults:</p>
+      <p>The <code>add()</code> function can also take a title and array of properties, below is an example of these with their defaults.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add($message = null, $title = null, $properties = [
                 'group' => 'default',
@@ -128,7 +128,7 @@
                 'speed' => 300
             ]);</code></pre>
       </div>
-      <p>You can group messages using the <code>group()</code> function, adding a message will place it in the last group; unless group is specified in the properties array.</p>
+      <p>You can group messages using the <code>group()</code> function, adding a message will place it in the last group; unless a group name is specified in the properties array.</p>
       <div class="highlight highlight-Php">
       <pre><code>toaster()->group('groupOne')
             ->add('Message One')
@@ -136,7 +136,7 @@
             ->add('Message Two')
             ->add('Message Three', null, ['group' => 'groupOne']);</code></pre>
       </div>
-      <p>The <code>group()</code> function can also take an array of properties, this can also update an existing group:</p>
+      <p>The <code>group()</code> function can also take an array of properties, this can update a group if a name that already exists is specified.</p>
       <div class="highlight highlight-Php">
             <pre><code>toaster()->group($name, 'groupOne', $properties = [
                     'name' => $name,
