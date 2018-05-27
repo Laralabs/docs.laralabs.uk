@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link href="https://fonts.googleapis.com/css?family=Miriam+Libre:400,700|Source+Sans+Pro:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="/css/cayman.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+              crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>           
   </head>
   <body>
     <section class="page-header">
@@ -18,7 +23,27 @@
       <a href="https://github.com/Laralabs/toaster" class="btn">View on GitHub</a>
       <a href="https://packagist.org/packages/laralabs/toaster" class="btn">View on Packagist</a>
       <div class="version-number">
-          Version <span class="v-num">2.0.1</span>
+          Version <span class="v-num">3.0.0</span><i class="version-nav fas fa-angle-down"></i>
+          <ul class="version-dropdown">
+            <li>
+                <a href="/toaster">
+                    <span class="dropdown-ver">3.0.0</span>
+                    <span class="dropdown-icon">
+                        <i class="fas fa-code-branch"></i>
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/toaster/2.0.1/index.html">
+                    <span class="dropdown-ver">2.0.1</span>
+                    <span class="dropdown-icon">
+                        <i class="fas fa-code-branch"></i>
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </li>
+          </ul>
       </div>
     </section>
 
@@ -26,13 +51,12 @@
 
       <h1><a id="introduction-heading" class="anchor" href="#introduction-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
       <p>The toaster package for Laravel provides a quick 'n' easy method for creating toast messages and binding the data to your view as a JS variable. You can then access them in your favourite Vue, Angular or React components.</p>
-      <blockquote>Documentation for version 1.1.0 can be found <a href="/toaster/1.1.0/index.html">here</a></blockquote>
 
       <h1><a id="installation-heading" class="anchor" href="#installation-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
       <h3><a id="prereq-heading" class="anchor" href="#prereq-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
       <p>Before beginning the installation process, make sure you have the prerequisites listed below:</p>
       <ul class="task-list">
-        <li>PHP >= 7.0</li>
+        <li>PHP >= 7.1</li>
         <li>Laravel >= 5.4</li>
         <li>Composer</li>
       </ul>
@@ -41,7 +65,7 @@
       <div class="highlight highlight-Javascript">
         <pre><code>{
     "require": {
-      "laralabs/toaster": "~2.0.1"
+      "laralabs/toaster": "~3.0.0"
     }
 }</code></pre>
       </div>
@@ -72,10 +96,39 @@
     return redirect('home');
 }</code></pre>
       </div>
-      <p>The <code>add()</code> function also takes arguments for other settings, below is an example of these with their defaults:</p>
+      <p>The <code>add()</code> function can also take a string title and array of properties, below is an example of these with their defaults:</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add($message = null, $theme = 'info', $closeBtn = false, $title = '', $expires = null);</code></pre>
+        <pre><code>toaster()->add($message = null, $title = null, $properties = [
+                'group' => 'default',
+                'message' => $message,
+                'type' => 'info',
+                'title' => $title,
+                'duration' => 2000,
+                'speed' => 300
+            ]);</code></pre>
       </div>
+      <p>You can group messages using the <code>group()</code> function, adding a message will place it in the last group; unless group is specified in the properties array.</p>
+      <div class="highlight highlight-Php">
+      <pre><code>toaster()->group('groupOne')
+            ->add('Message One')
+            ->group('groupTwo')->position('bottom left')
+            ->add('Message Two')
+            ->add('Message Three', null, ['group' => 'groupOne']);</code></pre>
+      </div>
+      <p>The <code>group()</code> function can also take an array of properties:</p>
+      <div class="highlight highlight-Php">
+            <pre><code>toaster()->group($name, 'groupOne', $properties = [
+                    'name' => $name,
+                    'width' => '300px',
+                    'classes' => [],
+                    'animation_type' => 'css',
+                    'animation_name' => null,
+                    'velocity_config' => 'velocity',
+                    'position' => 'top right',
+                    'max' => 10,
+                    'reverse' => false
+                ]);</code></pre>
+          </div>
       <h3><a id="blade-heading" class="anchor" href="#blade-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Blade Directive</h3>
       <p>Include the generated JavaScript within your view using the <code>@toaster</code> blade directive, you should add this in your template before the application scripts are loaded, within <code>&lt;head&gt;</code> would be the best location.</p>
       <div class="highlight highlight-Php">
@@ -83,145 +136,116 @@
     @toaster
 &lt;/head&gt;</code></pre>
       </div>
-      <h3><a id="helpers-heading" class="anchor" href="#helpers-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Helper Functions</h3>
-      <p>Helper functions are included to make modifying message properties a lot more friendly, these functions will always update the last message created with the <code>add()</code> function.</p>
-      <h4><a id="update-heading" class="anchor" href="#update-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>update()</h4>
-      <p>The <code>update()</code> function accepts an array as an argument, this can be used to mass update the previous message attributes.</p>
+      <p>New in version <code>3.0.0</code>, include the vue component within your view using the <code>@toastcomponent</code> blade directive, make sure this is placed within the element defined in your Vue instance.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->update(['theme' => 'error', 'closeBtn' => true, 'title' => 'It now has a title', 'expires' => 5000]);</code></pre>
+          <pre><code>&lt;div id="app"&gt;
+    @toastcomponent
+&lt;/div&gt;</code></pre>
       </div>
+      <h3><a id="group-helpers-heading" class="anchor" href="#group-helpers-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Group Helper Functions</h3>
+      <p>Group Helper functions are included to make modifying group properties a lot more friendly, these functions will always update the last group created with the <code>group()</code> function.</p>
+      <h4><a id="width-heading" class="anchor" href="#width-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>width()</h4>
+      <p>The <code>width()</code> function accepts a string as an argument and can be used to set the width property.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->group('groupOne')->width('500px');</code></pre>
+      </div>
+      <h4><a id="classes-heading" class="anchor" href="#classes-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>classes()</h4>
+      <p>The <code>classes()</code> function accepts an array as an argument and can be used to apply additional CSS classes to the group.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->group('groupOne')->classes(['classOne', 'classTwo']);</code></pre>
+      </div>
+      <h4><a id="position-heading" class="anchor" href="#position-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>position()</h4>
+      <p>The <code>position()</code> function accepts a string as an argument and can be used to set the position of the group.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->group('groupOne')->position('top left');</code></pre>
+      </div>
+      <h4><a id="max-heading" class="anchor" href="#max-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>max()</h4>
+      <p>The <code>max()</code> function accepts an integer as an argument and can be used to set the group message limit.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->group('groupOne')->max(20);</code></pre>
+      </div>
+      <h4><a id="reverse-heading" class="anchor" href="#reverse-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>reverse()</h4>
+      <p>The <code>reverse()</code> function accepts a boolean as an argument and can be used to reverse the order messages are displayed in.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->group('groupOne')->reverse(true);</code></pre>
+      </div>
+      <h3><a id="message-helpers-heading" class="anchor" href="#message-helpers-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Message Helper Functions</h3>
+      <p>Message Helper functions are included to make modifying message properties a lot more friendly, these functions will always update the last message created with the <code>add()</code> function.</p>
       <h4><a id="success-heading" class="anchor" href="#success-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>success()</h4>
-      <p>The <code>success()</code> function can be used to set the message theme to <code>'success'</code>.</p>
+      <p>The <code>success()</code> function can be used to set the message type to <code>'success'</code>.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add('Add message here')->success();</code></pre>
       </div>
       <h4><a id="error-heading" class="anchor" href="#error-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>error()</h4>
-      <p>The <code>error()</code> function can be used to set the message theme to <code>'error'</code>.</p>
+      <p>The <code>error()</code> function can be used to set the message type to <code>'error'</code>.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add('Add message here')->error();</code></pre>
       </div>
       <h4><a id="warning-heading" class="anchor" href="#warning-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>warning()</h4>
-      <p>The <code>warning()</code> function can be used to set the message theme to <code>'warning'</code>.</p>
+      <p>The <code>warning()</code> function can be used to set the message type to <code>'warn'</code>.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add('Add message here')->warning();</code></pre>
       </div>
       <h4><a id="important-heading" class="anchor" href="#important-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>important()</h4>
-      <p>The <code>important()</code> function can be used to set the closeBtn flag to <code>true</code>.</p>
+      <p>The <code>important()</code> function can be used to make close button active.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add('Add message here')->important();</code></pre>
       </div>
       <h4><a id="title-heading" class="anchor" href="#title-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>title()</h4>
-      <p>The <code>title()</code> function accepts one argument and can be used to set the title property.</p>
+      <p>The <code>title()</code> function can be used to set the message title.</p>
       <div class="highlight highlight-Php">
         <pre><code>toaster()->add('Add message here')->title('Message title here');</code></pre>
       </div>
-      <h4><a id="expires-heading" class="anchor" href="#expires-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>expires()</h4>
-      <p>The <code>expires()</code> function accepts one argument and can be used to set a custom expiry time, this overrides config values.</p>
+      <h4><a id="duration-heading" class="anchor" href="#duration-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>duration()</h4>
+      <p>The <code>duration()</code> function can be used to set the message duration, this will override the stagger option.</p>
       <div class="highlight highlight-Php">
-        <pre><code>toaster()->add('Add message here')->expires(5000);</code></pre>
+        <pre><code>toaster()->add('Add message here')->duration(5000);</code></pre>
       </div>
-      <h2><a id="vue-usage-heading" class="anchor" href="#vue-usage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Vue.js (vue-toast)</h2>
-        <p>This is a short guide on using this package with a Vue.js toast component, this guide assumes you have basic knowledge of working with Vue and Laravel.</p>
-        <blockquote>The component used in this section is <a href="https://github.com/AStaroverov/vue-toast">vue-toast</a>, a preview of the end result is included below</blockquote>
-        <p style="text-align: center">
-            <img src="/toaster/images/toasterexample.gif" alt="Toaster/vue-toast Example" />
-        </p>
-        <h3><a id="vue-installpackage-heading" class="anchor" href="#vue-installpackage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install Packages</h3>
-        <p>Install this package through composer</p>
+      <h4><a id="speed-heading" class="anchor" href="#speed-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>speed()</h4>
+      <p>The <code>speed()</code> function can be used to set the message animation speed.</p>
+      <div class="highlight highlight-Php">
+        <pre><code>toaster()->add('Add message here')->speed(500);</code></pre>
+      </div>
+      <h2><a id="vue-usage-heading" class="anchor" href="#vue-usage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Frontend Vue Component</h2>
+        <p>A Vue component is required to display the message data on the frontend, this can be obtained via npm or alternatively you can create your own.</p>
+        <h3><a id="vue-installpackage-heading" class="anchor" href="#vue-installpackage-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing Component</h3>
+        <p>Install the <a href="https://www.npmjs.com/package/laralabs-vue-toaster" target="_blank">laralabs-vue-toaster</a> package through npm.</p>
         <div class="highlight highlight-Bash">
-            <pre><code>composer require laralabs/toaster</code></pre>
+            <pre><code>npm install --save laralabs-vue-toaster</code></pre>
         </div>
-        <p>Follow the instructions above to make sure this package is loaded.</p>
-        <p>Install the <a href="https://www.npmjs.com/package/vue-toast">vue-toast</a> package through npm</p>
-        <div class="highlight highlight-Bash">
-            <pre><code>npm install vue-toast --save</code></pre>
-        </div>
-        <h3><a id="vue-configure-heading" class="anchor" href="#vue-configure-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configure Laravel Mix and Vue Instance</h3>
-        <p>Now that the packages are installed vue-toast can be pulled into Laravel Mix, add the following import lines to your <code>resources/assets/js/bootstrap.js</code> file.</p>
+        <h3><a id="vue-configure-heading" class="anchor" href="#vue-configure-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Include in application</h3>
+        <p>Now that the package is installed we can include it into the application, add the following import lines and component definitions to your <code>resources/assets/js/app.js</code> file. Make sure that you add this before your Vue instance definition.</p>
         <div class="highlight highlight-Js">
-            <pre><code>import 'vue-toast/dist/vue-toast.min.css'
-import VueToast from 'vue-toast'</code></pre>
+            <pre><code>import Notifications from 'vue-notification';
+import velocity from 'velocity-animate';
+                    
+Vue.use(Notifications, { velocity });
+Vue.component('toaster', require('laralabs-vue-toaster/src/ToasterComponent.vue'));</code></pre>
         </div>
-        <h4><a id="vue-define-component-heading" class="anchor" href="#vue-define-component-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Component</h4>
-        <p>Now that the component is getting imported, open <code>resources/assets/js/app.js</code> and register it in the Vue instance under <code>components</code>.</p>
-        <div class="highlight highlight-Js">
-                    <pre><code>const app = new Vue({
-    el: '#app',
-    components: {
-        VueToast
-    }
-});</code></pre>
-        </div>
+        <blockquote>The <code>velocity</code> plugin is optional and is only required when using the <code>velocity</code> animation type.</blockquote>
         <h4><a id="vue-define-data-heading" class="anchor" href="#vue-define-data-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Data</h4>
         <p>The data for the component needs to be defined in the Vue instance.</p>
         <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
         <div class="highlight highlight-Js">
-            <pre><code>const app = new Vue({
+            <pre><code>
+let app = new Vue({
     el: '#app',
-    data: {
-        js_namespace: {
-            data: {
-                timeLife: js_namespace.data.lifetime,
-                maxToasts: js_namespace.data.maxToasts,
-                messages: js_namespace.data.messages,
-                position: js_namespace.data.position
+        data: {
+            js_namespace: {
+                data: js_namespace.data
             }
         }
-    },
-    components: {
-        VueToast
-    }
-});</code></pre>
-        </div>
-        <h4><a id="vue-define-methods-heading" class="anchor" href="#vue-define-methods-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Methods</h4>
-        <p>For the component to work correctly some methods must be defined, these methods have been tweaked slightly to better suit this package. Add the following <code>methods</code> section beneath <code>data</code> in your Vue instance.</p>
-        <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
-        <div class="highlight highlight-Js">
-            <pre><code>methods: {
-    resetOptions: function() {
-        this.$refs.toast.setOptions({
-            delayOfJumps: this.js_namespace.data.delayOfJumps,
-            maxToasts: this.js_namespace.data.maxToasts,
-            position: this.js_namespace.data.position
-        })
-    },
-    displayToast: function(theme, message, closeBtn, expires) {
-        this.$refs.toast.showToast(message, {
-            theme: theme,
-            timeLife: expires,
-            closeBtn: closeBtn
-        })
-    },
-    showAll: function() {
-        const self = this;
-        $.each(this.js_namespace.data.messages, function (index, message) {
-            self.displayToast(message.theme, message.message, message.closeBtn, message.expires);
-        });
-    },
-    closeAll: function() {
-        this.$refs.toast.closeAll()
-    }
-},
-</code></pre>
-        </div>
-        <h4><a id="vue-define-mounted-heading" class="anchor" href="#vue-define-mounted-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Define Mounted</h4>
-        <p>The <code>mounted</code> function needs to be defined so that toast options can be reset and displayed.</p> <p>We need to check if there are any messages before attempting to display them, add the <code>mounted</code> function below under the <code>methods</code> section added in the previous step.</p>
-        <blockquote>Replace <code>js_namespace</code> with the namespace defined in <code>config/toaster.php</code>, the default is <code>toaster</code></blockquote>
-        <div class="highlight highlight-Js">
-            <pre><code>mounted: function () {
-    this.resetOptions();
-    if(this.js_namespace.data.messages) {
-        this.showAll();
-    }
-},</code></pre>
+});
+            </code></pre>
         </div>
         <h4><a id="vue-add-component-heading" class="anchor" href="#vue-add-component-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add Component To View</h4>
-        <p>The component needs to be added to a view for the toasts to display, place the code below into a view that is included on every page.</p>
+        <p>The component needs to be added to a view for the toasts to display, place the blade directive below into a view that is included on every page.</p>
         <div class="highlight highlight-Html">
-            <pre><code>&lt;vue-toast ref="toast"&gt;&lt;/vue-toast&gt;</code></pre>
+            <pre><code>@toastcomponent</code></pre>
         </div>
+        <p>The toaster package will add the <code>&lt;toaster&gt;&lt;/toaster&gt;</code> component definition for each group you define.</p>
         <h4><a id="vue-add-php-heading" class="anchor" href="#vue-add-php-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit Controller</h4>
-        <p>That's the Vue side of things setup, now create some messages using the <code>toaster()</code> function in your controller function before you return a view or perform a redirect.</p>
+        <p>That's the frontend side of things setup, now create some messages using the <code>toaster()</code> function in your controller function before you return a view or perform a redirect.</p>
         <div class="highlight highlight-Php">
             <pre><code>public function welcome()
 {
@@ -232,23 +256,17 @@ import VueToast from 'vue-toast'</code></pre>
         </div>
         <h4><a id="vue-final-checks-heading" class="anchor" href="#vue-final-checks-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Final Checks</h4>
         <p>Browse to the page that you have added your messages to, if they display then great! everything has been done correctly.</p>
-        <p>If they don't display there are a couple of things to check:</p>
+        <p>If they don't display there are a few things to check:</p>
         <ul>
             <li>Make sure <code>js_namespace</code> has been changed to the namespace you have set in <code>config/toaster.php</code></li>
             <li>Make sure that you have included the <code>@toaster</code> blade directive within your template file</li>
+            <li>Make sure that you have included the <code>@toastcomponent</code> blade directive within your template file if using <a href="https://www.npmjs.com/package/laralabs-vue-toaster" target="_blank">laralabs-vue-toaster</a></li>
         </ul>
 
         <p>Still having problems? Open an <a href="https://github.com/Laralabs/toaster/issues">issue</a> on GitHub with some code examples and we'll help you out.</p>
-        <hr>
-        <!--h2><a id="previous-docs-heading" class="anchor" href="#previous-docs-heading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous Documentation</h2>
-        <p>Toaster Documentation Archive</p>
-        <ul>
-            <li>
-            </li>
-        </ul-->
 
         <footer class="site-footer">
-        <span class="site-footer-owner">All packages under <a href="https://github.com/laralabs">Laralabs</a> are crafted with <i class="fa fa-heart heart"></i> by <a href="https://github.com/CLINT0N">Matt Clinton</a>.</span>
+        <span class="site-footer-owner">All packages under <a href="https://github.com/laralabs">Laralabs</a> are crafted with <i class="fas fa-heart heart"></i> by <a href="https://github.com/CLINT0N">Matt Clinton</a>.</span>
       </footer>
 
     </section>
