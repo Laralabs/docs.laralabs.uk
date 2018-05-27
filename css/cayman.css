@@ -95,7 +95,7 @@ a {
       font-size: 1rem; } }
 
 .version-number {
-  padding: 12px 26px;
+  padding: 12px 30px 12px 20px;
   background-color: rgba(255, 255, 255, 0.12);
   font-family: "Miriam Libre", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
@@ -106,6 +106,46 @@ a {
   border-radius: 10px; }
   .version-number .v-num {
     font-weight: bold; }
+
+.version-nav {
+  position: absolute;
+  top: 15px;
+  right: 11px;
+  cursor: pointer; }
+
+.version-dropdown {
+  width: 100%;
+  list-style: none;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 0px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2); }
+  .version-dropdown li {
+    padding: 5px 0;
+    text-align: right;
+    width: 100%; }
+    .version-dropdown li a {
+      color: #FFFFFF;
+      text-decoration: none; }
+      .version-dropdown li a .dropdown-ver {
+        width: 45%;
+        text-align: left;
+        display: inline-block; }
+      .version-dropdown li a .dropdown-icon {
+        width: 50%;
+        text-align: right;
+        display: inline-block; }
+        .version-dropdown li a .dropdown-icon .fa-code-branch {
+          display: inline; }
+        .version-dropdown li a .dropdown-icon .fa-arrow-right {
+          display: none; }
+      .version-dropdown li a:hover .dropdown-icon .fa-code-branch {
+        display: none; }
+      .version-dropdown li a:hover .dropdown-icon .fa-arrow-right {
+        display: inline; }
+    .version-dropdown li i {
+      margin-left: 52px; }
 
 .main-content {
   word-wrap: break-word; }
